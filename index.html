@@ -455,7 +455,7 @@
   $("lbDownload").addEventListener("click",function(){if(lbId)openFile(lbId,lbName);});
   $("lbClose").addEventListener("click",closeLightbox);
   lightbox.addEventListener("click",function(e){if(e.target===lightbox)closeLightbox();});
-  document.addEventListener("paste",function(e){if(!activeId||canvas.style.display==="none")return;var items=e.clipboardData&&e.clipboardData.items;if(!items)return;var imgs=[];for(var i=0;i<items.length;i++){if(items[i].kind==="file"&&items[i].type.indexOf("image/")===0){var f=items[i].getAsFile();if(f)imgs.push(f);}}if(imgs.length){e.preventDefault();imgs.forEach(function(f){attachBlob(f,(f.name&&f.name!=="image.png")?f.name:pastedName(f.type));});}});
+  document.addEventListener("paste",function(e){if(!activeId||canvas.style.display==="none")return;var cd=e.clipboardData;if(!cd)return;var text=cd.getData&&(cd.getData("text/plain")||cd.getData("text"));if(text&&text.trim())return;var items=cd.items;if(!items)return;var imgs=[];for(var i=0;i<items.length;i++){if(items[i].kind==="file"&&items[i].type.indexOf("image/")===0){var f=items[i].getAsFile();if(f)imgs.push(f);}}if(imgs.length){e.preventDefault();imgs.forEach(function(f){attachBlob(f,(f.name&&f.name!=="image.png")?f.name:pastedName(f.type));});}});
   canvas.addEventListener("dragover",function(e){if(canvas.style.display==="none")return;e.preventDefault();canvas.classList.add("dragging");});
   canvas.addEventListener("dragleave",function(e){if(e.target===canvas)canvas.classList.remove("dragging");});
   canvas.addEventListener("drop",function(e){e.preventDefault();canvas.classList.remove("dragging");if(!activeId)return;if(e.dataTransfer&&e.dataTransfer.files.length)attachFiles(e.dataTransfer.files);});
